@@ -1,0 +1,157 @@
+{
+  "students": [
+    {
+      "id": 1,
+      "name": "Jon Sa",
+      "gender": "Female",
+      "placedob": "Lahore, 24.3.2000",
+      "groups": "Typography, Black magicians,"
+    },
+    {
+      "id": 2,
+      "name": "Cersei",
+      "gender": "Male",
+      "placedob": "Lahore, 24.3.2000",
+      "groups": "Typography, Black magicians"
+    },
+    {
+      "id": 3,
+      "name": "Jaime",
+      "gender": "Male",
+      "placedob": "Lahore, 24.3.2000",
+      "groups": "Web designers"
+    },
+    {
+      "id": 4,
+      "name": "Arya",
+      "gender": "Female",
+      "placedob": "Lahore, 24.3.2000",
+      "groups": "Chemistry Capital"
+    },
+    {
+      "id": 5,
+      "name": "Daenerys",
+      "gender": "Male",
+      "placedob": "Lahore, 24.3.2000",
+      "groups": [
+        "Chemistry Capital",
+        "Web designers"
+      ]
+    },
+    {
+      "id": 6,
+      "name": "Arya",
+      "gender": "Female",
+      "placedob": "Lahore, 24.3.2000",
+      "groups": "Biologists"
+    },
+    {
+      "id": 7,
+      "name": "Ferrara",
+      "gender": "Male",
+      "placedob": "Lahore, 24.3.2000",
+      "groups": "Chemistry Capital"
+    },
+    {
+      "id": 8,
+      "name": "Rossini",
+      "gender": "Female",
+      "placedob": "Lahore, 24.3.2000",
+      "groups": "Web designers"
+    },
+    {
+      "id": 9,
+      "name": "Harvey S",
+      "gender": "Male",
+      "placedob": "Lahore, 24.3.2000",
+      "groups": "Lame gamer boys"
+    },
+    {
+      "id": 10,
+      "name": "Neyan",
+      "gender": "Male",
+      "placedob": "Lahore,2.4.2000",
+      "groups": [
+        "Chemistry Capital",
+        "Web designers"
+      ]
+    },
+    {
+      "id": 11,
+      "name": "Naeem ",
+      "gender": "Male",
+      "placedob": "Lahore,2.4.2000",
+      "groups": "Chemistry Capital"
+    },
+    {
+      "name": "Arslan",
+      "gender": "Female",
+      "placedob": "Lahore,2.4.2000",
+      "groups": [
+        "Biologists",
+        "Chemistry Capital"
+      ],
+      "id": 12
+    },
+    {
+      "name": "Saud",
+      "gender": "Female",
+      "placedob": "Lahore,2.4.2000",
+      "groups": [
+        "Biologists",
+        "Chemistry Capital"
+      ],
+      "id": 13
+    },
+    {
+      "name": "Dilawar",
+      "gender": "Female",
+      "placedob": "Lahore,2.4.2000",
+      "groups": [
+        "Biologists",
+        "Chemistry Capital"
+      ],
+      "id": 14
+    },
+    {
+      "name": "Aslam",
+      "gender": "Male",
+      "placedob": "Lahore,2.4.2000",
+      "groups": [
+        "Black magicians",
+        "Web designers"
+      ],
+      "id": 15
+    },
+    {
+      "name": "Nadeem",
+      "gender": "Male",
+      "placedob": "Lahore,2.4.2000",
+      "groups": [
+        "Web designers",
+        "Lame gamer boys"
+      ],
+      "id": 16
+    },
+    {
+      "name": "Neyan",
+      "gender": "Male",
+      "placedob": "Lahore,2.4.2000",
+      "groups": [
+        "Chemistry Capital",
+        "Black magicians"
+      ],
+      "id": 17
+    },
+    {
+      "name": "Neyan",
+      "gender": "Male",
+      "placedob": "Lahore,2.4.2000",
+      "groups": [
+        "Biologists",
+        "Chemistry Capital"
+      ],
+      "id": 18
+    }
+  ]
+}
