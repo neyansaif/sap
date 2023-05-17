@@ -1,25 +1,24 @@
-import React, { useState, useEffect } from "react";
-import Table from "./Table";
-import Paper from "@mui/material/Paper";
-import { Grid } from "@mui/material";
-import OpenForm from "./OpenForm";
+import React from "react";
+import { fetchStudentsData } from "../../api/api";
+import { Grid, Paper } from "@mui/material";
+import OpenForm from "./OpenForm/OpenForm";
+import Datatable from "./dataTable/DataTable";
 
 const Main = () => {
-   const [students, setStudents] = useState([]);
-   const [searchTerm, setSearchTerm] = useState("");
+   const [students, setStudents] = React.useState([]);
+   const [searchTerm, setSearchTerm] = React.useState("");
    const dataLength: number = students.length;
 
    const fetchData = async () => {
       try {
-         const res = await fetch("http://localhost:8000/students");
-         const data = await res.json();
+         const data = await fetchStudentsData();
          setStudents(data);
       } catch (error) {
-         console.log(`Server Error While Fetching Students Data ${error}`);
+         console.log(`Error while fetching students data: ${error}`);
       }
    };
 
-   useEffect(() => {
+   React.useEffect(() => {
       fetchData();
    }, []);
 
@@ -36,7 +35,11 @@ const Main = () => {
                dataLength={dataLength}
             />
             <br />
-            <Table students={students} searchTerm={searchTerm} />
+            <Datatable
+               students={students}
+               onFormSubmit={fetchData}
+               searchTerm={searchTerm}
+            />
          </Paper>
       </Grid>
    );

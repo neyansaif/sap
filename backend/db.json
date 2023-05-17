@@ -2,7 +2,7 @@
   "students": [
     {
       "id": 1,
-      "name": "Jon Sa",
+      "name": "Jon S",
       "gender": "Female",
       "placedob": "Lahore, 24.3.2000",
       "groups": "Typography, Black magicians,"
@@ -132,26 +132,6 @@
         "Lame gamer boys"
       ],
       "id": 16
-    },
-    {
-      "name": "Neyan",
-      "gender": "Male",
-      "placedob": "Lahore,2.4.2000",
-      "groups": [
-        "Chemistry Capital",
-        "Black magicians"
-      ],
-      "id": 17
-    },
-    {
-      "name": "Neyan",
-      "gender": "Male",
-      "placedob": "Lahore,2.4.2000",
-      "groups": [
-        "Biologists",
-        "Chemistry Capital"
-      ],
-      "id": 18
     }
   ]
 }

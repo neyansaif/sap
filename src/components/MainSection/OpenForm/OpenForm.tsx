@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { makeStyles } from "@material-ui/core/styles";
+import React from "react";
+import { addStudent } from "../../../api/api";
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 import SearchIcon from "@mui/icons-material/Search";
 import AddBoxIcon from "@mui/icons-material/AddBox";
@@ -16,41 +16,12 @@ import {
    Grid,
 } from "@mui/material";
 
-const useStyles = makeStyles((theme) => ({
-   form: {
-      display: "flex",
-      flexDirection: "column",
-      alignItems: "center",
-      gap: theme.spacing(2),
-      margin: "0 auto",
-      maxWidth: 500,
-      padding: theme.spacing(2),
-      border: `1px solid ${theme.palette.grey[300]}`,
-      borderRadius: theme.spacing(1),
-   },
-   formGroup: {
-      display: "flex",
-      flexDirection: "column",
-      gap: theme.spacing(1),
-      width: "100%",
-   },
-   selectField: {
-      minWidth: 200,
-   },
-   textField: {
-      minWidth: 200,
-   },
-   submitButton: {
-      marginRight: theme.spacing(2),
-   },
-}));
-
-interface FormData {
+type FormData = {
    name: string;
    gender: string;
    placedob: string;
    groups: string[];
-}
+};
 
 const initialFormData: FormData = {
    name: "",
@@ -75,16 +46,14 @@ const groupOptions = [
 ];
 
 const OpenForm = (props: any) => {
-   const classes = useStyles();
-
    const handleSearch = (e: any) => {
       const searchTerm = e.target.value;
       props.onSearch(searchTerm);
    };
 
-   const [formData, setFormData] = useState<FormData>(initialFormData);
+   const [formData, setFormData] = React.useState<FormData>(initialFormData);
 
-   const [showModal, setShowModal] = useState(false);
+   const [showModal, setShowModal] = React.useState(false);
 
    const handleClose = () => setShowModal(false);
    const handleShow = () => setShowModal(true);
@@ -115,25 +84,15 @@ const OpenForm = (props: any) => {
       }
 
       try {
-         const response = await fetch("http://localhost:8000/students", {
-            method: "POST",
-            headers: {
-               "Content-Type": "application/json",
-            },
-            body: JSON.stringify(formData),
-         });
+         await addStudent(formData as any);
          handleClose();
          setFormData(initialFormData);
          props.onFormSubmit();
-
-         if (!response.ok) {
-            throw new Error("Failed to add student");
-         }
       } catch (error) {
-         console.error(`Failed to add student ${error}`);
+         // Handle the error in the main component
+         console.error(`Failed to add student: ${error}`);
       }
    };
-
    return (
       <>
          <Grid container sx={{ alignItems: "center" }}>
@@ -197,11 +156,11 @@ const OpenForm = (props: any) => {
                <Typography variant="h6" fontSize="1.5rem" fontWeight={700}>
                   Add Student
                </Typography>
-               <form className={classes.form} onSubmit={handleSubmit}>
-                  <div className={classes.formGroup}>
+               <form onSubmit={handleSubmit}>
+                  <div>
                      <InputLabel>Name</InputLabel>
                      <TextField
-                        className={classes.textField}
+                        fullWidth
                         variant="outlined"
                         placeholder="Enter Your Name"
                         name="name"
@@ -210,12 +169,12 @@ const OpenForm = (props: any) => {
                         required
                      />
                   </div>
-                  <div className={classes.formGroup}>
+                  <div>
                      <InputLabel>Gender</InputLabel>
                      <Select
-                        className={classes.selectField}
                         variant="outlined"
                         name="gender"
+                        fullWidth
                         value={formData.gender}
                         onChange={handleChange}
                         required
@@ -227,20 +186,19 @@ const OpenForm = (props: any) => {
                         ))}
                      </Select>
                   </div>
-                  <div className={classes.formGroup}>
+                  <div>
                      <InputLabel>Place and Date of Birth</InputLabel>
                      <TextField
-                        className={classes.textField}
                         variant="outlined"
-                        placeholder="Lahore, 01/01/2000"
+                        placeholder="ex:Lahore, 01/01/2000"
                         name="placedob"
+                        fullWidth
                         value={formData.placedob}
                         onChange={handleChange}
                         required
                      />
                   </div>
-
-                  <div className={classes.formGroup}>
+                  <div>
                      <InputLabel>Groups</InputLabel>
                      <Select
                         variant="outlined"
@@ -248,10 +206,7 @@ const OpenForm = (props: any) => {
                         value={formData.groups}
                         onChange={handleChange}
                         multiple
-                        required
-                        MenuProps={{
-                           disableAutoFocusItem: true,
-                        }}
+                        fullWidth
                      >
                         {groupOptions.map((option) => (
                            <MenuItem key={option.value} value={option.value}>
@@ -267,16 +222,10 @@ const OpenForm = (props: any) => {
                      gap={2}
                      marginTop={3}
                   >
-                     <Button
-                        className={classes.submitButton}
-                        variant="contained"
-                        color="success"
-                        type="submit"
-                     >
+                     <Button variant="contained" color="success" type="submit">
                         Submit
                      </Button>
                      <Button
-                        className={classes.submitButton}
                         variant="contained"
                         color="error"
                         onClick={() => setFormData(initialFormData)}
