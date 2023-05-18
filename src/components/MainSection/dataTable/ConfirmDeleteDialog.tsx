@@ -1,3 +1,4 @@
+import React from "react";
 import {
    Dialog,
    DialogTitle,
@@ -7,9 +8,17 @@ import {
    Typography,
 } from "@mui/material";
 
-const ConfirmDeleteDialog = (props: any) => {
+type ConfirmDeleteDialogProps = {
+   openConfirmDialog: boolean;
+   handleCancelDelete: () => void;
+   handleConfirmDelete: () => void;
+};
+
+const ConfirmDeleteDialog: React.FC<ConfirmDeleteDialogProps> = (props) => {
+   const { openConfirmDialog, handleCancelDelete, handleConfirmDelete } = props;
+
    return (
-      <Dialog open={props.openConfirmDialog} onClose={props.handleCancelDelete}>
+      <Dialog open={openConfirmDialog} onClose={handleCancelDelete}>
          <DialogTitle>Confirm Delete</DialogTitle>
          <DialogContent>
             <Typography variant="body1">
@@ -17,9 +26,9 @@ const ConfirmDeleteDialog = (props: any) => {
             </Typography>
          </DialogContent>
          <DialogActions>
-            <Button onClick={props.handleCancelDelete}>Cancel</Button>
+            <Button onClick={handleCancelDelete}>Cancel</Button>
             <Button
-               onClick={props.handleConfirmDelete}
+               onClick={handleConfirmDelete}
                variant="contained"
                color="error"
             >

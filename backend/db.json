@@ -2,10 +2,10 @@
   "students": [
     {
       "id": 1,
-      "name": "Jon S",
+      "name": "Jon",
       "gender": "Female",
       "placedob": "Lahore, 24.3.2000",
-      "groups": "Typography, Black magicians,"
+      "groups": "Typography"
     },
     {
       "id": 2,
@@ -124,14 +124,11 @@
       "id": 15
     },
     {
-      "name": "Nadeem",
+      "id": 16,
+      "name": "Nadeem a",
       "gender": "Male",
       "placedob": "Lahore,2.4.2000",
-      "groups": [
-        "Web designers",
-        "Lame gamer boys"
-      ],
-      "id": 16
+      "groups": "Web designers, Lame gamer boys"
     }
   ]
 }

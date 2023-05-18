@@ -1,3 +1,4 @@
+import React from "react";
 import {
    Typography,
    Box,
@@ -9,7 +10,7 @@ import {
 type FilterPanelProps = {
    studyGroups: string[];
    selectedGroups: string[];
-   handleGroupChange: any;
+   handleGroupChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
 const FilterPanel: React.FC<FilterPanelProps> = ({

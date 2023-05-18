@@ -45,7 +45,13 @@ const groupOptions = [
    { value: "Lame gamer boys", label: " Lame gamer boys" },
 ];
 
-const OpenForm = (props: any) => {
+type OpenFormProps = {
+   onSearch: (searchTerm: string) => void;
+   onFormSubmit: () => void;
+   dataLength: number;
+};
+
+const OpenForm = (props: OpenFormProps) => {
    const handleSearch = (e: any) => {
       const searchTerm = e.target.value;
       props.onSearch(searchTerm);
@@ -59,7 +65,7 @@ const OpenForm = (props: any) => {
    const handleShow = () => setShowModal(true);
 
    const handleChange = (
-      event: React.ChangeEvent<{ name?: string; value: unknown }>
+      event: React.ChangeEvent<{ name?: string; value: string | unknown }>
    ) => {
       const { name, value } = event.target;
       setFormData((prevFormData) => ({
@@ -89,7 +95,6 @@ const OpenForm = (props: any) => {
          setFormData(initialFormData);
          props.onFormSubmit();
       } catch (error) {
-         // Handle the error in the main component
          console.error(`Failed to add student: ${error}`);
       }
    };

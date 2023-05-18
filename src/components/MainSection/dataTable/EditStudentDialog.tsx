@@ -15,12 +15,12 @@ type Student = {
    groups: string[];
 };
 
-interface EditStudentDialogProps {
+type EditStudentDialogProps = {
    editStudent: Student | any;
    handleCancel: () => void;
    handleSave: () => void;
    setEditStudent: (student: Student | null) => void;
-}
+};
 
 const EditStudentDialog: React.FC<EditStudentDialogProps> = ({
    editStudent,

@@ -1,10 +1,10 @@
 import React from "react";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
-import FilterPanel from "./FilterPanel";
-import DeleteIcon from "@mui/icons-material/Delete";
-import { deleteStudent, updateStudent } from "../../../api/api";
-import EditIcon from "@mui/icons-material/Edit";
 import { Grid, Box } from "@mui/material";
+import { deleteStudent, updateStudent } from "../../../api/api";
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
+import FilterPanel from "./FilterPanel";
 import ConfirmDeleteDialog from "./ConfirmDeleteDialog";
 import EditStudentDialog from "./EditStudentDialog";
 
@@ -48,7 +48,7 @@ const DataTable: React.FC<TableProps> = ({
    );
 
    //update
-   const [editStudent, setEditStudent] = React.useState<any>(null);
+   const [editStudent, setEditStudent] = React.useState<null | Student>(null);
 
    //Handle checkbox
    const [selectedGroups, setSelectedGroups] = React.useState<string[]>([]);
