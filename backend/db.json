@@ -1,0 +1,37 @@
+{
+  "students": [
+    {
+      "id": 1,
+      "name": "Neyan",
+      "gender": "male",
+      "placeOfBirth": "Lahore",
+      "dateOfBirth": "2000-02-28",
+      "groups": [
+        "Biologists",
+        "Black magicians"
+      ]
+    },
+    {
+      "id": 2,
+      "name": "Naeem",
+      "gender": "male",
+      "placeOfBirth": "Lahore",
+      "dateOfBirth": "2023-05-19",
+      "groups": [
+        "Lame gamer boys",
+        "Web designers"
+      ]
+    },
+    {
+      "id": 3,
+      "name": "Neyan",
+      "gender": "male",
+      "placeOfBirth": "Lahore",
+      "dateOfBirth": "2000-02-28",
+      "groups": [
+        "Black magicians",
+        "Web designers"
+      ]
+    }
+  ]
+}
