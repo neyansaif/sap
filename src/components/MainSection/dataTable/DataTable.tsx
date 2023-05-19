@@ -1,12 +1,12 @@
 import React from "react";
-import { DataGrid, GridColDef } from "@mui/x-data-grid";
-import { Grid, Box } from "@mui/material";
 import { deleteStudent, updateStudent } from "../../../api/api";
+import ConfirmDeleteDialog from "./ConfirmDeleteDialog";
+import FilterPanel from "./FilterPanel";
+import EditStudentForm from "./EditStudentForm";
+import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
-import FilterPanel from "./FilterPanel";
-import ConfirmDeleteDialog from "./ConfirmDeleteDialog";
-import EditStudentDialog from "./EditStudentDialog";
+import { Grid, Box, Dialog } from "@mui/material";
 
 const pageSizeOptions = [5, 10, 25, 50, 100];
 
@@ -23,33 +23,22 @@ type Student = {
    id: number;
    name: string;
    gender: string;
-   placedob: string;
+   placeOfBirth: string;
+   dateOfBirth: string;
    groups: string[];
 };
 
-type TableProps = {
+type DataTableProps = {
    students: Student[];
    searchTerm: string;
    onFormSubmit: () => void;
 };
 
-const DataTable: React.FC<TableProps> = ({
+const DataTable: React.FC<DataTableProps> = ({
    students,
    searchTerm,
    onFormSubmit,
 }) => {
-   const [allStudents, setAllStudents] = React.useState<Student[]>(students);
-   console.log(allStudents);
-
-   //delete
-   const [openConfirmDialog, setOpenConfirmDialog] = React.useState(false);
-   const [deleteStudentId, setDeleteStudentId] = React.useState<number | null>(
-      null
-   );
-
-   //update
-   const [editStudent, setEditStudent] = React.useState<null | Student>(null);
-
    //Handle checkbox
    const [selectedGroups, setSelectedGroups] = React.useState<string[]>([]);
 
@@ -59,6 +48,15 @@ const DataTable: React.FC<TableProps> = ({
          (selectedGroups.length === 0 ||
             selectedGroups.some((group) => student.groups.includes(group)))
    );
+
+   //delete
+   const [openConfirmDialog, setOpenConfirmDialog] = React.useState(false);
+   const [deleteStudentId, setDeleteStudentId] = React.useState<number | null>(
+      null
+   );
+
+   //update
+   const [editStudent, setEditStudent] = React.useState<null | Student>(null);
 
    const handleGroupChange = (event: React.ChangeEvent<HTMLInputElement>) => {
       const { value, checked } = event.target;
@@ -78,10 +76,7 @@ const DataTable: React.FC<TableProps> = ({
       if (deleteStudentId) {
          deleteStudent(deleteStudentId)
             .then(() => {
-               const updatedStudents = students.filter(
-                  (student) => student.id !== deleteStudentId
-               );
-               setAllStudents(updatedStudents);
+               students.filter((student) => student.id !== deleteStudentId);
                setOpenConfirmDialog(false);
                onFormSubmit();
             })
@@ -103,14 +98,13 @@ const DataTable: React.FC<TableProps> = ({
       setOpenConfirmDialog(false);
    };
 
-   const handleSave = () => {
+   const handleSave = (values: Student) => {
       if (editStudent) {
-         updateStudent(editStudent)
+         updateStudent(values)
             .then((data) => {
-               const updatedStudents = students.map((student) =>
+               students.map((student) =>
                   student.id === data.id ? data : student
                );
-               setAllStudents(updatedStudents);
                setEditStudent(null);
                onFormSubmit();
             })
@@ -135,15 +129,23 @@ const DataTable: React.FC<TableProps> = ({
       { field: "name", headerName: "NAME", width: 150, editable: true },
       { field: "gender", headerName: "GENDER", width: 150, editable: true },
       {
-         field: "placedob",
-         headerName: "PLACE & DATE OF BIRTH",
-         width: 220,
+         field: "combinedInfo",
+         headerName: "Place and Date of Birth",
+         width: 200,
          editable: true,
+         renderCell: (params) => (
+            <div>
+               <span>{params.row.placeOfBirth}</span>
+               <span> - </span>
+               <span>{params.row.dateOfBirth}</span>
+            </div>
+         ),
       },
+
       {
          field: "groups",
          headerName: "GROUPS",
-         width: 220,
+         width: 300,
          editable: true,
       },
       {
@@ -169,6 +171,15 @@ const DataTable: React.FC<TableProps> = ({
       },
    ];
 
+   const rows = filteredStudents.map((student) => ({
+      id: student.id,
+      name: student.name,
+      gender: student.gender,
+      placeOfBirth: student.placeOfBirth,
+      dateOfBirth: student.dateOfBirth,
+      groups: student.groups.map((group) => group),
+   }));
+
    return (
       <Grid container>
          <Grid item xs={12} md={3}>
@@ -181,16 +192,7 @@ const DataTable: React.FC<TableProps> = ({
          <Grid item xs={12} md={9}>
             <Box style={{ height: 450, width: "100%" }}>
                <DataGrid
-                  rows={filteredStudents.map((student) => ({
-                     id: student.id,
-                     name: student.name,
-                     gender: student.gender,
-                     placedob: student.placedob,
-                     groups: Array.isArray(student.groups)
-                        ? student.groups.join(", ")
-                        : student.groups,
-                     //
-                  }))}
+                  rows={rows}
                   columns={columns}
                   pageSizeOptions={pageSizeOptions}
                />
@@ -199,12 +201,13 @@ const DataTable: React.FC<TableProps> = ({
                   handleCancelDelete={handleCancelDelete}
                   handleConfirmDelete={handleConfirmDelete}
                />
-               <EditStudentDialog
-                  editStudent={editStudent}
-                  handleCancel={handleCancel}
-                  handleSave={handleSave}
-                  setEditStudent={setEditStudent}
-               />
+               <Dialog open={!!editStudent} onClose={handleCancel}>
+                  <EditStudentForm
+                     editStudent={editStudent}
+                     onSave={handleSave}
+                     onCancel={handleCancel}
+                  />
+               </Dialog>
             </Box>
          </Grid>
       </Grid>

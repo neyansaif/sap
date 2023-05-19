@@ -1,12 +1,16 @@
-interface Student {
+const API_URL = "http://localhost:8000/students";
+
+
+
+type Student = {
     id: number;
     name: string;
     gender: string;
-    placedob: string;
+    placeOfBirth: string;
+    dateOfBirth: string;
     groups: string[];
-}
+};
 
-const API_URL = "http://localhost:8000/students";
 
 
 //For Fetch API call 
@@ -22,7 +26,7 @@ const fetchStudentsData = async () => {
 };
 
 //For Post API call
-const addStudent = async (formData: FormData) => {
+const addStudent = async (formData: Student) => {
     try {
         const response = await fetch(API_URL, {
             method: "POST",

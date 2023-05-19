@@ -4,8 +4,17 @@ import { Grid, Paper } from "@mui/material";
 import OpenForm from "./OpenForm/OpenForm";
 import Datatable from "./dataTable/DataTable";
 
+type Student = {
+   id: number;
+   name: string;
+   gender: string;
+   placeOfBirth: string;
+   dateOfBirth: string;
+   groups: string[];
+};
+
 const Main = () => {
-   const [students, setStudents] = React.useState([]);
+   const [students, setStudents] = React.useState<Student[]>([]);
    const [searchTerm, setSearchTerm] = React.useState("");
    const dataLength: number = students.length;
 

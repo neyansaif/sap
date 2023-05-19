@@ -14,9 +14,11 @@ type ConfirmDeleteDialogProps = {
    handleConfirmDelete: () => void;
 };
 
-const ConfirmDeleteDialog: React.FC<ConfirmDeleteDialogProps> = (props) => {
-   const { openConfirmDialog, handleCancelDelete, handleConfirmDelete } = props;
-
+const ConfirmDeleteDialog: React.FC<ConfirmDeleteDialogProps> = ({
+   openConfirmDialog,
+   handleCancelDelete,
+   handleConfirmDelete,
+}) => {
    return (
       <Dialog open={openConfirmDialog} onClose={handleCancelDelete}>
          <DialogTitle>Confirm Delete</DialogTitle>
