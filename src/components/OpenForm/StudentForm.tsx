@@ -1,6 +1,6 @@
 import * as Yup from "yup";
 import { useFormik } from "formik";
-import { Student } from "../../types/types";
+import { Student } from "../../types/Student";
 import { useAddStudent } from "../../api/api";
 import {
    Box,

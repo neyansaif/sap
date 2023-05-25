@@ -1,6 +1,6 @@
 import React from "react";
 import { useDeleteStudent, useUpdateStudent } from "../../api/api";
-import { Student } from "../../types/types";
+import { Student } from "../../types/Student";
 import ConfirmDeleteDialog from "./ConfirmDeleteDialog";
 import FilterPanel from "./FilterPanel";
 import EditStudentForm from "./EditStudentForm";
