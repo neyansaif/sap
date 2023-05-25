@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ChangeEvent } from "react";
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 import SearchIcon from "@mui/icons-material/Search";
 import AddBoxIcon from "@mui/icons-material/AddBox";
@@ -17,21 +17,16 @@ import StudentForm from "./StudentForm";
 
 type OpenFormProps = {
    onSearch: (searchTerm: string) => void;
-   onFormSubmit: () => void;
    dataLength: number;
 };
 
-const OpenForm: React.FC<OpenFormProps> = ({
-   onSearch,
-   onFormSubmit,
-   dataLength,
-}) => {
+const OpenForm: React.FC<OpenFormProps> = ({ onSearch, dataLength }) => {
    const [showModal, setShowModal] = React.useState(false);
    const handleClose = () => setShowModal(false);
    const handleShow = () => setShowModal(true);
 
-   const handleSearch = (e: any) => {
-      const searchTerm = e.target.value;
+   const handleSearch = (event: ChangeEvent<HTMLInputElement>) => {
+      const searchTerm = event.target.value;
       onSearch(searchTerm);
    };
 
@@ -66,7 +61,7 @@ const OpenForm: React.FC<OpenFormProps> = ({
                            fontSize="small"
                            style={{ marginRight: "0.5rem" }}
                         />
-                        {dataLength} Students
+                        {dataLength} {dataLength > 1 ? "Students" : "Student"}
                      </Typography>
                   </Box>
                   <Box>
@@ -95,10 +90,7 @@ const OpenForm: React.FC<OpenFormProps> = ({
                   width: "100%",
                }}
             >
-               <StudentForm
-                  onFormSubmit={onFormSubmit}
-                  handleClose={handleClose}
-               />
+               <StudentForm handleClose={handleClose} />
             </Box>
          </Modal>
       </>

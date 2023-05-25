@@ -4,33 +4,33 @@
       "id": 1,
       "name": "Neyan",
       "gender": "male",
-      "placeOfBirth": "Lahore",
-      "dateOfBirth": "2000-02-28",
+      "placeOfBirth": "Lahore, Punjab",
+      "dateOfBirth": "2010-06-08",
       "groups": [
         "Biologists",
-        "Black magicians"
+        "Web designers"
       ]
     },
     {
       "id": 2,
-      "name": "Naeem",
+      "name": "Saud",
       "gender": "male",
       "placeOfBirth": "Lahore",
-      "dateOfBirth": "2023-05-19",
+      "dateOfBirth": "2023-05-16",
       "groups": [
-        "Lame gamer boys",
+        "Typography",
         "Web designers"
       ]
     },
     {
       "id": 3,
-      "name": "Neyan",
+      "name": "JamAli",
       "gender": "male",
       "placeOfBirth": "Lahore",
-      "dateOfBirth": "2000-02-28",
+      "dateOfBirth": "2023-05-17",
       "groups": [
-        "Black magicians",
-        "Web designers"
+        "Typography",
+        "Black magicians"
       ]
     }
   ]

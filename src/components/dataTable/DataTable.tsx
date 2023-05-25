@@ -1,5 +1,6 @@
 import React from "react";
-import { deleteStudent, updateStudent } from "../../../api/api";
+import { useDeleteStudent, useUpdateStudent } from "../../api/api";
+import { Student } from "../../types/Student";
 import ConfirmDeleteDialog from "./ConfirmDeleteDialog";
 import FilterPanel from "./FilterPanel";
 import EditStudentForm from "./EditStudentForm";
@@ -19,26 +20,15 @@ const studyGroups: string[] = [
    "Lame gamer boys",
 ];
 
-type Student = {
-   id: number;
-   name: string;
-   gender: string;
-   placeOfBirth: string;
-   dateOfBirth: string;
-   groups: string[];
-};
-
 type DataTableProps = {
    students: Student[];
    searchTerm: string;
-   onFormSubmit: () => void;
 };
 
-const DataTable: React.FC<DataTableProps> = ({
-   students,
-   searchTerm,
-   onFormSubmit,
-}) => {
+const DataTable: React.FC<DataTableProps> = ({ students, searchTerm }) => {
+   const deleteMutation = useDeleteStudent(); // Use the custom delete mutation hook
+   const updateMutation = useUpdateStudent(); // Use the custom update mutation hook
+
    //Handle checkbox
    const [selectedGroups, setSelectedGroups] = React.useState<string[]>([]);
 
@@ -49,13 +39,13 @@ const DataTable: React.FC<DataTableProps> = ({
             selectedGroups.some((group) => student.groups.includes(group)))
    );
 
-   //delete
+   //Handle Delete Dailog
    const [openConfirmDialog, setOpenConfirmDialog] = React.useState(false);
    const [deleteStudentId, setDeleteStudentId] = React.useState<number | null>(
       null
    );
 
-   //update
+   //Handle Update
    const [editStudent, setEditStudent] = React.useState<null | Student>(null);
 
    const handleGroupChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -74,24 +64,14 @@ const DataTable: React.FC<DataTableProps> = ({
 
    const handleConfirmDelete = () => {
       if (deleteStudentId) {
-         deleteStudent(deleteStudentId)
-            .then(() => {
-               students.filter((student) => student.id !== deleteStudentId);
-               setOpenConfirmDialog(false);
-               onFormSubmit();
-            })
-            .catch((error) =>
-               console.log(
-                  `Server Error While Deleting the Student Record ${error}`
-               )
-            );
+         deleteMutation.mutate(deleteStudentId); // Call the mutation function from the delete mutation hook
+         setOpenConfirmDialog(false);
       }
    };
 
    const handleDelete = (id: number) => {
       setDeleteStudentId(id);
       setOpenConfirmDialog(true);
-      onFormSubmit();
    };
 
    const handleCancelDelete = () => {
@@ -100,19 +80,8 @@ const DataTable: React.FC<DataTableProps> = ({
 
    const handleSave = (values: Student) => {
       if (editStudent) {
-         updateStudent(values)
-            .then((data) => {
-               students.map((student) =>
-                  student.id === data.id ? data : student
-               );
-               setEditStudent(null);
-               onFormSubmit();
-            })
-            .catch((error) =>
-               console.log(
-                  `Server Error While Updating the Student Record ${error}`
-               )
-            );
+         updateMutation.mutate(values); // Call the mutation function from the update mutation hook
+         setEditStudent(null);
       }
    };
 
