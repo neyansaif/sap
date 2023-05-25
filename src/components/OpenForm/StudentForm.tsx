@@ -1,6 +1,7 @@
 import * as Yup from "yup";
 import { useFormik } from "formik";
-import { Student } from "../../types/types";
+import { customAlphabet } from "nanoid";
+import { Student } from "../../types/Student";
 import { useAddStudent } from "../../api/api";
 import {
    Box,
@@ -40,7 +41,7 @@ const validationSchema = Yup.object({
 });
 
 const initialValues: Student = {
-   id: 0,
+   id: "",
    name: "",
    gender: "",
    placeOfBirth: "",
@@ -55,9 +56,12 @@ type StudentFormProps = {
 const StudentForm: React.FC<StudentFormProps> = ({ handleClose }) => {
    const { mutate: addStudent } = useAddStudent();
 
-   const handleSubmit = async (values: any) => {
+   const generateNumericId = customAlphabet("0123456789", 3);
+
+   const handleSubmit = async (values: Student) => {
       try {
-         await addStudent(values);
+         await addStudent({ ...values, id: generateNumericId() });
+
          handleClose();
          formik.setValues(initialValues);
       } catch (error) {

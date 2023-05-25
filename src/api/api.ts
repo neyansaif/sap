@@ -1,16 +1,9 @@
 import axios from 'axios';
 import { useQuery, useMutation, useQueryClient } from 'react-query';
+import { Student } from '../types/Student';
 
 const API_URL = 'http://localhost:8000/students';
 
-type Student = {
-    id: number;
-    name: string;
-    gender: string;
-    placeOfBirth: string;
-    dateOfBirth: string;
-    groups: string[];
-};
 
 
 // Fetch API call

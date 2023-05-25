@@ -1,36 +1,45 @@
 {
   "students": [
     {
-      "id": 1,
+      "id": "125",
       "name": "Neyan",
       "gender": "male",
-      "placeOfBirth": "Lahore, Punjab",
-      "dateOfBirth": "2010-06-08",
+      "placeOfBirth": "Lahore",
+      "dateOfBirth": "2023-05-22",
       "groups": [
-        "Biologists",
+        "Black magicians",
         "Web designers"
       ]
     },
     {
-      "id": 2,
+      "id": "869",
       "name": "Saud",
       "gender": "male",
       "placeOfBirth": "Lahore",
-      "dateOfBirth": "2023-05-16",
+      "dateOfBirth": "2023-05-15",
       "groups": [
-        "Typography",
         "Web designers"
       ]
     },
     {
-      "id": 3,
-      "name": "JamAli",
+      "id": "452",
+      "name": "Aslam",
       "gender": "male",
-      "placeOfBirth": "Lahore",
-      "dateOfBirth": "2023-05-17",
+      "placeOfBirth": "Lahore, Punjab",
+      "dateOfBirth": "2023-05-25",
       "groups": [
-        "Typography",
-        "Black magicians"
+        "Black magicians",
+        "Biologists"
+      ]
+    },
+    {
+      "id": "038",
+      "name": "Neyan",
+      "gender": "male",
+      "placeOfBirth": "Lahore, Punjab",
+      "dateOfBirth": "2023-05-09",
+      "groups": [
+        "Biologists"
       ]
     }
   ]

@@ -1,7 +1,7 @@
 import React from "react";
 import * as Yup from "yup";
 import { useFormik } from "formik";
-import { Student } from "../../types/types";
+import { Student } from "../../types/Student";
 import {
    FormControl,
    TextField,
