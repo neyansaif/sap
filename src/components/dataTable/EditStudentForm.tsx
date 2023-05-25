@@ -1,6 +1,7 @@
 import React from "react";
-import { useFormik } from "formik";
 import * as Yup from "yup";
+import { useFormik } from "formik";
+import { Student } from "../../types/types";
 import {
    FormControl,
    TextField,
@@ -12,10 +13,19 @@ import {
    Radio,
    RadioGroup,
    InputLabel,
-   Select,
-   MenuItem,
    Box,
+   FormGroup,
+   Checkbox,
 } from "@mui/material";
+
+const groupsOptions = [
+   "Typography",
+   "Biologists",
+   "Chemistry Capital",
+   "Web designers",
+   "Black magicians",
+   "Lame gamer boys",
+];
 
 const validationSchema = Yup.object({
    name: Yup.string()
@@ -24,17 +34,10 @@ const validationSchema = Yup.object({
    gender: Yup.string().required("Gender is required"),
    placeOfBirth: Yup.string().required("Place of birth is required"),
    dateOfBirth: Yup.string().required("Date of birth is required"),
-   groups: Yup.array().required("Groups are required"),
+   groups: Yup.array()
+      .required("Groups are required")
+      .min(1, "At least one group must be selected"),
 });
-
-type Student = {
-   id: number;
-   name: string;
-   gender: string;
-   placeOfBirth: string;
-   dateOfBirth: string;
-   groups: string[];
-};
 
 type EditStudentFormProps = {
    editStudent: Student | null;
@@ -153,36 +156,37 @@ const EditStudentForm: React.FC<EditStudentFormProps> = ({
                   />
                </FormControl>
 
-               <FormControl
-                  error={formik.touched.groups && Boolean(formik.errors.groups)}
-                  fullWidth
-               >
-                  <InputLabel id="groups-label">Groups</InputLabel>
-                  <Select
-                     id="groups"
-                     name="groups"
-                     multiple
-                     labelId="groups-label"
-                     value={formik.values.groups}
-                     onChange={formik.handleChange}
-                     onBlur={formik.handleBlur}
-                     renderValue={(selected) =>
-                        (selected as string[]).join(", ")
-                     }
-                  >
-                     <MenuItem value="Typography">Typography</MenuItem>
-                     <MenuItem value="Biologists">Biologists</MenuItem>
-                     <MenuItem value="Chemistry Capital">
-                        Chemistry Capital
-                     </MenuItem>
-                     <MenuItem value="Web designers">Web designers</MenuItem>
-                     <MenuItem value="Black magicians">
-                        Black magicians
-                     </MenuItem>
-                     <MenuItem value="Lame gamer boys">
-                        Lame gamer boys
-                     </MenuItem>
-                  </Select>
+               <InputLabel id="groups-label">Groups</InputLabel>
+               <FormControl sx={{ p: 2, minWidth: 120 }}>
+                  <FormGroup row>
+                     {groupsOptions.map((option) => (
+                        <FormControlLabel
+                           key={option}
+                           control={
+                              <Checkbox
+                                 name="groups"
+                                 value={option}
+                                 checked={formik.values.groups.includes(option)}
+                                 onChange={(event) => {
+                                    const value = event.target.value;
+                                    const updatedGroups =
+                                       formik.values.groups.includes(value)
+                                          ? formik.values.groups.filter(
+                                               (group) => group !== value
+                                            )
+                                          : [...formik.values.groups, value];
+                                    formik.setFieldValue(
+                                       "groups",
+                                       updatedGroups
+                                    );
+                                 }}
+                                 onBlur={formik.handleBlur}
+                              />
+                           }
+                           label={option}
+                        />
+                     ))}
+                  </FormGroup>
                   {formik.touched.groups && formik.errors.groups && (
                      <div>{formik.errors.groups}</div>
                   )}

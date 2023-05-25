@@ -1,6 +1,7 @@
 import * as Yup from "yup";
 import { useFormik } from "formik";
-import { addStudent } from "../../../api/api";
+import { Student } from "../../types/types";
+import { useAddStudent } from "../../api/api";
 import {
    Box,
    TextField,
@@ -11,11 +12,20 @@ import {
    RadioGroup,
    FormControlLabel,
    Radio,
-   Select,
-   MenuItem,
    InputLabel,
    Stack,
+   Checkbox,
+   FormGroup,
 } from "@mui/material";
+
+const groupsOptions = [
+   "Typography",
+   "Biologists",
+   "Chemistry Capital",
+   "Web designers",
+   "Black magicians",
+   "Lame gamer boys",
+];
 
 const validationSchema = Yup.object({
    name: Yup.string()
@@ -24,10 +34,12 @@ const validationSchema = Yup.object({
    gender: Yup.string().required("Gender is required"),
    placeOfBirth: Yup.string().required("Place of birth is required"),
    dateOfBirth: Yup.string().required("Date of birth is required"),
-   groups: Yup.array().required("Groups are required"),
+   groups: Yup.array()
+      .required("Groups are required")
+      .min(1, "At least one group must be selected"),
 });
 
-const initialValues = {
+const initialValues: Student = {
    id: 0,
    name: "",
    gender: "",
@@ -37,28 +49,28 @@ const initialValues = {
 };
 
 type StudentFormProps = {
-   onFormSubmit: () => void;
    handleClose: () => void;
 };
 
-const StudentForm: React.FC<StudentFormProps> = ({
-   handleClose,
-   onFormSubmit,
-}) => {
+const StudentForm: React.FC<StudentFormProps> = ({ handleClose }) => {
+   const { mutate: addStudent } = useAddStudent();
+
+   const handleSubmit = async (values: any) => {
+      try {
+         await addStudent(values);
+         handleClose();
+         formik.setValues(initialValues);
+      } catch (error) {
+         console.error(`Failed to add student: ${error}`);
+      }
+   };
+
    const formik = useFormik({
       initialValues: initialValues,
       validationSchema: validationSchema,
-      onSubmit: async (values) => {
-         try {
-            await addStudent(values);
-            handleClose();
-            formik.setValues(initialValues);
-            onFormSubmit();
-         } catch (error) {
-            console.error(`Failed to add student: ${error}`);
-         }
-      },
+      onSubmit: handleSubmit,
    });
+
    return (
       <div>
          <Typography variant="h5">Add Student</Typography>
@@ -146,38 +158,51 @@ const StudentForm: React.FC<StudentFormProps> = ({
                   }}
                />
             </FormControl>
-            <FormControl
-               error={formik.touched.groups && Boolean(formik.errors.groups)}
-               fullWidth
-            >
-               <InputLabel id="groups-label">Groups</InputLabel>
-               <Select
-                  id="groups"
-                  name="groups"
-                  multiple
-                  labelId="groups-label"
-                  value={formik.values.groups}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  renderValue={(selected) => selected.join(", ")}
-               >
-                  <MenuItem value="Typography">Typography</MenuItem>
-                  <MenuItem value="Biologists">Biologists</MenuItem>
-                  <MenuItem value="Chemistry Capital">
-                     Chemistry Capital
-                  </MenuItem>
-                  <MenuItem value="Web designers">Web designers</MenuItem>
-                  <MenuItem value="Black magicians">Black magicians</MenuItem>
-                  <MenuItem value="Lame gamer boys">Lame gamer boys</MenuItem>
-               </Select>
+            <InputLabel id="groups-label">Groups</InputLabel>
+            <FormControl sx={{ p: 2, minWidth: 120 }}>
+               <FormGroup row>
+                  {groupsOptions.map((option) => (
+                     <FormControlLabel
+                        key={option}
+                        control={
+                           <Checkbox
+                              name="groups"
+                              value={option}
+                              checked={formik.values.groups.includes(option)}
+                              onChange={(event) => {
+                                 const value = event.target.value;
+                                 const updatedGroups =
+                                    formik.values.groups.includes(value)
+                                       ? formik.values.groups.filter(
+                                            (group) => group !== value
+                                         )
+                                       : [...formik.values.groups, value];
+                                 formik.setFieldValue("groups", updatedGroups);
+                              }}
+                              onBlur={formik.handleBlur}
+                           />
+                        }
+                        label={option}
+                     />
+                  ))}
+               </FormGroup>
                {formik.touched.groups && formik.errors.groups && (
                   <div>{formik.errors.groups}</div>
                )}
             </FormControl>
+
             <Stack spacing={2} direction="row" sx={{ p: 2 }}>
-               <Button type="submit" variant="contained" color="success">
+               <Button
+                  type="submit"
+                  variant="contained"
+                  color="success"
+                  disabled={
+                     !formik.isValid || formik.isSubmitting || !formik.dirty
+                  }
+               >
                   Submit
                </Button>
+
                <Button
                   onClick={formik.handleReset}
                   variant="contained"
