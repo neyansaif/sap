@@ -1,7 +1,7 @@
 import * as Yup from "yup";
 import { useFormik } from "formik";
-import { customAlphabet } from "nanoid";
 import { Student } from "../../types/Student";
+import { customAlphabet } from "nanoid";
 import { useAddStudent } from "../../api/api";
 import {
    Box,
