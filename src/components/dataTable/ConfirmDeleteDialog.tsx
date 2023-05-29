@@ -1,4 +1,5 @@
 import React from "react";
+import { ConfirmDeleteDialogProps } from "../../types/ConfirmDeleteDialogProps";
 import {
    Dialog,
    DialogTitle,
@@ -7,12 +8,6 @@ import {
    Button,
    Typography,
 } from "@mui/material";
-
-type ConfirmDeleteDialogProps = {
-   openConfirmDialog: boolean;
-   handleCancelDelete: () => void;
-   handleConfirmDelete: () => void;
-};
 
 const ConfirmDeleteDialog: React.FC<ConfirmDeleteDialogProps> = ({
    openConfirmDialog,

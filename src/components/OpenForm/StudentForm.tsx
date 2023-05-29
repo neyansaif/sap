@@ -1,8 +1,10 @@
-import * as Yup from "yup";
 import { useFormik } from "formik";
 import { Student } from "../../types/Student";
-import { customAlphabet } from "nanoid";
-import { useAddStudent } from "../../api/api";
+import { studyGroups } from "../../constants/studyGroups";
+import { validationSchema } from "../../constants/validationSchema";
+import { useAddStudent } from "../../services/Hooks/useAddStudent";
+import { StudentFormProps } from "../../types/StudentFormProps";
+import { initialValues } from "../../constants/initialValues";
 import {
    Box,
    TextField,
@@ -19,49 +21,12 @@ import {
    FormGroup,
 } from "@mui/material";
 
-const groupsOptions = [
-   "Typography",
-   "Biologists",
-   "Chemistry Capital",
-   "Web designers",
-   "Black magicians",
-   "Lame gamer boys",
-];
-
-const validationSchema = Yup.object({
-   name: Yup.string()
-      .required("Name is required")
-      .matches(/^[A-Za-z]+$/, "Name should contain only letters"),
-   gender: Yup.string().required("Gender is required"),
-   placeOfBirth: Yup.string().required("Place of birth is required"),
-   dateOfBirth: Yup.string().required("Date of birth is required"),
-   groups: Yup.array()
-      .required("Groups are required")
-      .min(1, "At least one group must be selected"),
-});
-
-const initialValues: Student = {
-   id: "",
-   name: "",
-   gender: "",
-   placeOfBirth: "",
-   dateOfBirth: "",
-   groups: [],
-};
-
-type StudentFormProps = {
-   handleClose: () => void;
-};
-
 const StudentForm: React.FC<StudentFormProps> = ({ handleClose }) => {
    const { mutate: addStudent } = useAddStudent();
 
-   const generateNumericId = customAlphabet("0123456789", 3);
-
    const handleSubmit = async (values: Student) => {
       try {
-         await addStudent({ ...values, id: generateNumericId() });
-
+         await addStudent(values);
          handleClose();
          formik.setValues(initialValues);
       } catch (error) {
@@ -165,7 +130,7 @@ const StudentForm: React.FC<StudentFormProps> = ({ handleClose }) => {
             <InputLabel id="groups-label">Groups</InputLabel>
             <FormControl sx={{ p: 2, minWidth: 120 }}>
                <FormGroup row>
-                  {groupsOptions.map((option) => (
+                  {studyGroups.map((option) => (
                      <FormControlLabel
                         key={option}
                         control={
