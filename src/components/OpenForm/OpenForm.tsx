@@ -2,6 +2,8 @@ import React, { ChangeEvent } from "react";
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 import SearchIcon from "@mui/icons-material/Search";
 import AddBoxIcon from "@mui/icons-material/AddBox";
+import { OpenFormProps } from "../../types/OpenFormProps";
+import StudentForm from "./StudentForm";
 import {
    TextField,
    InputAdornment,
@@ -13,12 +15,6 @@ import {
    Modal,
    Grid,
 } from "@mui/material";
-import StudentForm from "./StudentForm";
-
-type OpenFormProps = {
-   onSearch: (searchTerm: string) => void;
-   dataLength: number;
-};
 
 const OpenForm: React.FC<OpenFormProps> = ({ onSearch, dataLength }) => {
    const [showModal, setShowModal] = React.useState(false);

@@ -2,10 +2,16 @@ import React from "react";
 import { Box, CircularProgress, Grid, Paper } from "@mui/material";
 import OpenForm from "./OpenForm/OpenForm";
 import DataTable from "./dataTable/DataTable";
-import { useFetchStudentsData } from "../api/api";
+
+import { useFetchStudentsData } from "../services/Hooks/useFetchStudentsData";
 
 const Section = () => {
-   const { isLoading, error, data: students = [] } = useFetchStudentsData();
+   const {
+      isLoading,
+      isError,
+      error,
+      data: students = [],
+   } = useFetchStudentsData();
    const [searchTerm, setSearchTerm] = React.useState("");
 
    const handleSearch = (searchTerm: string) => {
@@ -20,7 +26,7 @@ const Section = () => {
       );
    }
 
-   if (error) {
+   if (isError) {
       const errorMessage = (error as Error).message || "An error occurred";
       return <Box>Error: {errorMessage}</Box>;
    }

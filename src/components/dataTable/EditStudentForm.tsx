@@ -1,7 +1,8 @@
 import React from "react";
-import * as Yup from "yup";
 import { useFormik } from "formik";
-import { Student } from "../../types/Student";
+import { EditStudentFormProps } from "../../types/EditStudentFormProps";
+import { studyGroups } from "../../constants/studyGroups";
+import { validationSchema } from "../../constants/validationSchema";
 import {
    FormControl,
    TextField,
@@ -18,33 +19,6 @@ import {
    Checkbox,
 } from "@mui/material";
 
-const groupsOptions = [
-   "Typography",
-   "Biologists",
-   "Chemistry Capital",
-   "Web designers",
-   "Black magicians",
-   "Lame gamer boys",
-];
-
-const validationSchema = Yup.object({
-   name: Yup.string()
-      .required("Name is required")
-      .matches(/^[A-Za-z]+$/, "Name should contain only letters"),
-   gender: Yup.string().required("Gender is required"),
-   placeOfBirth: Yup.string().required("Place of birth is required"),
-   dateOfBirth: Yup.string().required("Date of birth is required"),
-   groups: Yup.array()
-      .required("Groups are required")
-      .min(1, "At least one group must be selected"),
-});
-
-type EditStudentFormProps = {
-   editStudent: Student | null;
-   onSave: (values: Student) => void;
-   onCancel: () => void;
-};
-
 const EditStudentForm: React.FC<EditStudentFormProps> = ({
    editStudent,
    onSave,
@@ -52,7 +26,7 @@ const EditStudentForm: React.FC<EditStudentFormProps> = ({
 }) => {
    const formik = useFormik({
       initialValues: {
-         id: editStudent?.id || 0,
+         id: editStudent?.id || "",
          name: editStudent?.name || "",
          gender: editStudent?.gender || "",
          placeOfBirth: editStudent?.placeOfBirth || "",
@@ -159,7 +133,7 @@ const EditStudentForm: React.FC<EditStudentFormProps> = ({
                <InputLabel id="groups-label">Groups</InputLabel>
                <FormControl sx={{ p: 2, minWidth: 120 }}>
                   <FormGroup row>
-                     {groupsOptions.map((option) => (
+                     {studyGroups.map((option) => (
                         <FormControlLabel
                            key={option}
                            control={

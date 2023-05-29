@@ -1,4 +1,5 @@
 import React from "react";
+import { FilterPanelProps } from "../../types/FilterPanelProps";
 import {
    Typography,
    Box,
@@ -6,12 +7,6 @@ import {
    FormControlLabel,
    Checkbox,
 } from "@mui/material";
-
-type FilterPanelProps = {
-   studyGroups: string[];
-   selectedGroups: string[];
-   handleGroupChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-};
 
 const FilterPanel: React.FC<FilterPanelProps> = ({
    studyGroups,

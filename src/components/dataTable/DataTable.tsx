@@ -1,6 +1,10 @@
 import React from "react";
-import { useDeleteStudent, useUpdateStudent } from "../../api/api";
-import { Student } from "../../types/Student";
+import { useDeleteStudent } from "../../services/Hooks/useDeleteStudent";
+import { useUpdateStudent } from "../../services/Hooks/useUpdateStudent";
+import { EditStudent } from "../../types/EditStudent";
+import { DataTableProps } from "../../types/DataTableProps";
+import { studyGroups } from "../../constants/studyGroups";
+import { pageSizeOptions } from "../../constants/pageSizeOptions";
 import ConfirmDeleteDialog from "./ConfirmDeleteDialog";
 import FilterPanel from "./FilterPanel";
 import EditStudentForm from "./EditStudentForm";
@@ -8,22 +12,7 @@ import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import { Grid, Box, Dialog } from "@mui/material";
-
-const pageSizeOptions = [5, 10, 25, 50, 100];
-
-const studyGroups: string[] = [
-   "Typography",
-   "Biologists",
-   "Chemistry Capital",
-   "Web designers",
-   "Black magicians",
-   "Lame gamer boys",
-];
-
-type DataTableProps = {
-   students: Student[];
-   searchTerm: string;
-};
+import { Student } from "../../types/Student";
 
 const DataTable: React.FC<DataTableProps> = ({ students, searchTerm }) => {
    const deleteMutation = useDeleteStudent(); // Use the custom delete mutation hook
@@ -32,7 +21,7 @@ const DataTable: React.FC<DataTableProps> = ({ students, searchTerm }) => {
    //Handle checkbox
    const [selectedGroups, setSelectedGroups] = React.useState<string[]>([]);
 
-   const filteredStudents: Student[] = students.filter(
+   const filteredStudents = students.filter(
       (student) =>
          student.name.toLowerCase().includes(searchTerm.toLowerCase()) &&
          (selectedGroups.length === 0 ||
@@ -41,12 +30,14 @@ const DataTable: React.FC<DataTableProps> = ({ students, searchTerm }) => {
 
    //Handle Delete Dailog
    const [openConfirmDialog, setOpenConfirmDialog] = React.useState(false);
-   const [deleteStudentId, setDeleteStudentId] = React.useState<number | null>(
+   const [deleteStudentId, setDeleteStudentId] = React.useState<string | null>(
       null
    );
 
    //Handle Update
-   const [editStudent, setEditStudent] = React.useState<null | Student>(null);
+   const [editStudent, setEditStudent] = React.useState<null | EditStudent>(
+      null
+   );
 
    const handleGroupChange = (event: React.ChangeEvent<HTMLInputElement>) => {
       const { value, checked } = event.target;
@@ -69,7 +60,7 @@ const DataTable: React.FC<DataTableProps> = ({ students, searchTerm }) => {
       }
    };
 
-   const handleDelete = (id: number) => {
+   const handleDelete = (id: string) => {
       setDeleteStudentId(id);
       setOpenConfirmDialog(true);
    };
@@ -78,14 +69,14 @@ const DataTable: React.FC<DataTableProps> = ({ students, searchTerm }) => {
       setOpenConfirmDialog(false);
    };
 
-   const handleSave = (values: Student) => {
+   const handleSave = (values: EditStudent) => {
       if (editStudent) {
          updateMutation.mutate(values); // Call the mutation function from the update mutation hook
          setEditStudent(null);
       }
    };
 
-   const handleEdit = (student: Student) => {
+   const handleEdit = (student: EditStudent) => {
       setEditStudent(student);
    };
 
@@ -140,14 +131,19 @@ const DataTable: React.FC<DataTableProps> = ({ students, searchTerm }) => {
       },
    ];
 
-   const rows = filteredStudents.map((student) => ({
-      id: student.id,
-      name: student.name,
-      gender: student.gender,
-      placeOfBirth: student.placeOfBirth,
-      dateOfBirth: student.dateOfBirth,
-      groups: student.groups.map((group) => group),
-   }));
+   const rows = filteredStudents.map((student: Student) => {
+      const formattedDateOfBirth = new Date(student.dateOfBirth)
+         .toISOString()
+         .split("T")[0];
+      return {
+         id: student._id,
+         name: student.name,
+         gender: student.gender,
+         placeOfBirth: student.placeOfBirth,
+         dateOfBirth: formattedDateOfBirth,
+         groups: student.groups.map((group: string) => group),
+      };
+   });
 
    return (
       <Grid container>
