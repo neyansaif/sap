@@ -165,9 +165,7 @@ const StudentForm: React.FC<StudentFormProps> = ({ handleClose }) => {
                   type="submit"
                   variant="contained"
                   color="success"
-                  disabled={
-                     !formik.isValid || formik.isSubmitting || !formik.dirty
-                  }
+                  disabled={!formik.isValid || !formik.dirty}
                >
                   Submit
                </Button>
