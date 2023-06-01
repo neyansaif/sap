@@ -41,7 +41,7 @@ export default function SignIn() {
          const { token } = response.data;
          localStorage.setItem("token", token);
          setError("");
-         window.location.href = "/";
+         window.location.href = "/dashboard";
       } catch (error: any) {
          if (error.response) {
             setError(error.response.data.error);

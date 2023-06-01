@@ -16,7 +16,7 @@ export default function MenuAppBar() {
    const handleLogout = () => {
       localStorage.removeItem("token");
       handleClose();
-      window.location.href = "/";
+      window.location.href = "/login";
    };
 
    const handleMenu = (event: React.MouseEvent<HTMLElement>) => {

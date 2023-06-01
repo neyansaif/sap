@@ -1,7 +1,9 @@
 import React from "react";
-import * as Yup from "yup";
+import axios from "axios";
 import { useFormik } from "formik";
-import { Link, useNavigate } from "react-router-dom";
+import { signUpValidationSchema } from "./constants/signUpValidationSchema";
+import { signUpInitialValues } from "./constants/signUpInitialValues";
+import { Link } from "react-router-dom";
 import { RegisterUser } from "./types/RegisterUser";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import {
@@ -15,44 +17,16 @@ import {
    Alert,
    CssBaseline,
 } from "@mui/material";
-import axios from "axios";
-// import { useRegisterUser } from "./services/Hooks/useRegisterUser";
-
-const validationSchema = Yup.object().shape({
-   firstName: Yup.string()
-      .matches(/^[a-zA-Z]+$/, "First name should only contain alphabets")
-      .required("First name is required"),
-   lastName: Yup.string()
-      .matches(/^[a-zA-Z]+$/, "Last name should only contain alphabets")
-      .required("Last name is required"),
-   email: Yup.string()
-      .email("Invalid email address")
-      .required("Email is required"),
-   password: Yup.string()
-      .matches(
-         /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d]{6,}$/,
-         "Password must contain at least one letter and one number"
-      )
-      .required("Password is required"),
-});
-
-const initialValues = {
-   firstName: "",
-   lastName: "",
-   email: "",
-   password: "",
-};
 
 export default function SignUp() {
    const [error, setError] = React.useState("");
-   const navigate = useNavigate();
 
    const handleSubmit = async (values: RegisterUser) => {
       try {
          await axios.post("http://localhost:8000/register-user", values);
-         formik.setValues(initialValues);
+         formik.setValues(signUpInitialValues);
          setError("");
-         navigate("/");
+         window.location.href = "/login";
       } catch (error: any) {
          if (error.response) {
             setError(error.response.data.error);
@@ -62,8 +36,8 @@ export default function SignUp() {
       }
    };
    const formik = useFormik({
-      initialValues: initialValues,
-      validationSchema: validationSchema,
+      initialValues: signUpInitialValues,
+      validationSchema: signUpValidationSchema,
       onSubmit: handleSubmit,
    });
 
@@ -180,7 +154,7 @@ export default function SignUp() {
                <Grid container justifyContent="flex-end">
                   <Grid item>
                      <Link
-                        to="/"
+                        to="/login"
                         style={{
                            textDecoration: "none",
                            color: "black",

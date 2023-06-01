@@ -12,11 +12,11 @@ function App() {
       <Router>
          <Nav />
          <Routes>
-            <Route path="/signin" element={<SignIn />} />
+            <Route path="/" element={<SignIn />} />
             {!token ? (
-               <Route path="/" element={<SignIn />} />
+               <Route path="/login" element={<SignIn />} />
             ) : (
-               <Route path="/" element={<Dashboard />} />
+               <Route path="/dashboard" element={<Dashboard />} />
             )}
             <Route path="/signup" element={<SignUp />} />
             <Route path="*" element={<NotFound />} />
