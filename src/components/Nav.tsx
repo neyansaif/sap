@@ -1,4 +1,5 @@
 import React from "react";
+import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
 import {
    Avatar,
    AppBar,
@@ -8,10 +9,15 @@ import {
    MenuItem,
    Menu,
 } from "@mui/material";
-import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
 
 export default function MenuAppBar() {
+   const token = localStorage.getItem("token");
    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+   const handleLogout = () => {
+      localStorage.removeItem("token");
+      handleClose();
+      window.location.href = "/login";
+   };
 
    const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
       setAnchorEl(event.currentTarget);
@@ -61,24 +67,25 @@ export default function MenuAppBar() {
             >
                <Avatar alt="Remy Sharp" src="/pic1.png" />
             </IconButton>
-            <Menu
-               id="menu-appbar"
-               anchorEl={anchorEl}
-               anchorOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-               }}
-               keepMounted
-               transformOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-               }}
-               open={Boolean(anchorEl)}
-               onClose={handleClose}
-            >
-               <MenuItem onClick={handleClose}>Profile</MenuItem>
-               <MenuItem onClick={handleClose}>My account</MenuItem>
-            </Menu>
+            {token && (
+               <Menu
+                  id="menu-appbar"
+                  anchorEl={anchorEl}
+                  anchorOrigin={{
+                     vertical: "bottom",
+                     horizontal: "left",
+                  }}
+                  keepMounted
+                  transformOrigin={{
+                     vertical: "bottom",
+                     horizontal: "right",
+                  }}
+                  open={Boolean(anchorEl)}
+                  onClose={handleClose}
+               >
+                  <MenuItem onClick={handleLogout}>LogOut</MenuItem>
+               </Menu>
+            )}
          </Toolbar>
       </AppBar>
    );

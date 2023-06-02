@@ -1,9 +1,14 @@
 import { Student } from "../model/student-schema.js";
 
+// For Student CRUD operations
+
 export const getStudents = async (req, res) => {
+   const userId = req.userId;
    try {
-      const students = await Student.find();
-      res.json(students);
+      // Find the student data for the authenticated user
+      const studentData = await Student.find({ userId });
+
+      res.json(studentData);
    } catch (error) {
       console.error("Failed to fetch students:", error);
       res.status(500).json({ error: "Server error" });
@@ -11,9 +16,17 @@ export const getStudents = async (req, res) => {
 };
 
 export const addStudent = async (req, res) => {
+   const userId = req.userId;
+   const { name, gender, placeOfBirth, dateOfBirth, groups } = req.body;
    try {
-      const studentData = req.body;
-      const student = new Student(studentData);
+      const student = new Student({
+         name,
+         gender,
+         placeOfBirth,
+         dateOfBirth,
+         groups,
+         userId,
+      });
       await student.save();
       res.status(201).json(student);
    } catch (error) {

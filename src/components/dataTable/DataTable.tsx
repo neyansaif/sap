@@ -11,10 +11,15 @@ import EditStudentForm from "./EditStudentForm";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
-import { Grid, Box, Dialog } from "@mui/material";
+import { Grid, Box, Dialog, CircularProgress } from "@mui/material";
 import { Student } from "../../types/Student";
 
-const DataTable: React.FC<DataTableProps> = ({ students, searchTerm }) => {
+const DataTable: React.FC<DataTableProps> = ({
+   students,
+   isLoading,
+   error,
+   searchTerm,
+}) => {
    const deleteMutation = useDeleteStudent(); // Use the custom delete mutation hook
    const updateMutation = useUpdateStudent(); // Use the custom update mutation hook
 
@@ -156,23 +161,36 @@ const DataTable: React.FC<DataTableProps> = ({ students, searchTerm }) => {
          </Grid>
          <Grid item xs={12} md={9}>
             <Box style={{ height: 450, width: "100%" }}>
-               <DataGrid
-                  rows={rows}
-                  columns={columns}
-                  pageSizeOptions={pageSizeOptions}
-               />
-               <ConfirmDeleteDialog
-                  openConfirmDialog={openConfirmDialog}
-                  handleCancelDelete={handleCancelDelete}
-                  handleConfirmDelete={handleConfirmDelete}
-               />
-               <Dialog open={!!editStudent} onClose={handleCancel}>
-                  <EditStudentForm
-                     editStudent={editStudent}
-                     onSave={handleSave}
-                     onCancel={handleCancel}
-                  />
-               </Dialog>
+               {isLoading ? (
+                  <Box display="flex" justifyContent="center">
+                     <CircularProgress color="secondary" />
+                  </Box>
+               ) : error ? (
+                  // Show error message if there is an error
+                  <Box>
+                     Error: {(error as Error).message || "An error occurred"}
+                  </Box>
+               ) : (
+                  <>
+                     <DataGrid
+                        rows={rows}
+                        columns={columns}
+                        pageSizeOptions={pageSizeOptions}
+                     />
+                     <ConfirmDeleteDialog
+                        openConfirmDialog={openConfirmDialog}
+                        handleCancelDelete={handleCancelDelete}
+                        handleConfirmDelete={handleConfirmDelete}
+                     />
+                     <Dialog open={!!editStudent} onClose={handleCancel}>
+                        <EditStudentForm
+                           editStudent={editStudent}
+                           onSave={handleSave}
+                           onCancel={handleCancel}
+                        />
+                     </Dialog>
+                  </>
+               )}
             </Box>
          </Grid>
       </Grid>
